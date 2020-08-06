@@ -1,0 +1,115 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://SideParticles.tscn" type="PackedScene" id=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+void fragment() {
+    COLOR = vec4(0.2, 0.4, 0.4, 1.0);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 128, 128 )
+current = true
+
+[node name="CPUParticles2D" parent="." instance=ExtResource( 2 )]
+
+[node name="CPUParticles2D2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 356, -25 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource( 2 )
+margin_right = 256.0
+margin_bottom = 256.0
+rect_min_size = Vector2( 1, 0 )
+texture = ExtResource( 1 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 167.0
+margin_top = 3.0
+margin_right = -3.0
+margin_bottom = -164.0
+grow_horizontal = 0
+grow_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="CanvasLayer/MarginContainer"]
+margin_right = 86.0
+margin_bottom = 92.0
+text = "top right
+
+blocks:
+
+"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 3.0
+margin_top = 3.0
+margin_right = -128.0
+margin_bottom = -104.0
+grow_horizontal = 0
+grow_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer2"]
+margin_right = 125.0
+margin_bottom = 149.0
+text = "top left
+
+imagineee
+
+time: 99:99
+deaths: 20
+
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 159.0
+margin_top = 240.0
+margin_right = -3.0
+margin_bottom = -3.0
+grow_horizontal = 0
+grow_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer3"]
+margin_right = 97.0
+margin_bottom = 16.0
+text = "pog or dog??"
+align = 2
+valign = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
