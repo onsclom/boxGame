@@ -1,17 +1,69 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://SideParticles.tscn" type="PackedScene" id=2]
+[ext_resource path="res://artPack/Tilemap/monochrome_tilemap_packed.png" type="Texture" id=3]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id=8]
+code = "
+"
+
+[sub_resource type="ShaderMaterial" id=9]
+shader = SubResource( 8 )
+
+[sub_resource type="Shader" id=5]
 code = "shader_type canvas_item;
 
 void fragment() {
-    COLOR = vec4(0.2, 0.4, 0.4, 1.0);
+    COLOR = vec4(0, 0, 0, 1);
 }"
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 5 )
+
+[sub_resource type="TileSet" id=7]
+0/name = "monochrome_tilemap_packed.png 0"
+0/texture = ExtResource( 3 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 320, 320 )
+0/tile_mode = 2
+0/autotile/icon_coordinate = Vector2( 0, 0 )
+0/autotile/tile_size = Vector2( 32, 32 )
+0/autotile/spacing = 0
+0/autotile/occluder_map = [  ]
+0/autotile/navpoly_map = [  ]
+0/autotile/priority_map = [  ]
+0/autotile/z_index_map = [  ]
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+1/name = "monochrome_tilemap_packed.png 1"
+1/texture = ExtResource( 3 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 0, 0, 320, 320 )
+1/tile_mode = 2
+1/autotile/icon_coordinate = Vector2( 0, 0 )
+1/autotile/tile_size = Vector2( 16, 16 )
+1/autotile/spacing = 0
+1/autotile/occluder_map = [  ]
+1/autotile/navpoly_map = [  ]
+1/autotile/priority_map = [  ]
+1/autotile/z_index_map = [  ]
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
 
 [node name="Node2D" type="Node2D"]
 
@@ -24,51 +76,39 @@ current = true
 [node name="CPUParticles2D2" parent="." instance=ExtResource( 2 )]
 position = Vector2( 356, -25 )
 
-[node name="TextureRect" type="TextureRect" parent="."]
-material = SubResource( 2 )
-margin_right = 256.0
-margin_bottom = 256.0
-rect_min_size = Vector2( 1, 0 )
-texture = ExtResource( 1 )
-expand = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="UI stuff" type="CanvasLayer" parent="."]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+[node name="MarginContainer" type="MarginContainer" parent="UI stuff"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 167.0
 margin_top = 3.0
-margin_right = -3.0
-margin_bottom = -164.0
+margin_right = -4.0
+margin_bottom = -161.0
 grow_horizontal = 0
-grow_vertical = 0
+grow_vertical = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label2" type="Label" parent="CanvasLayer/MarginContainer"]
-margin_right = 86.0
+[node name="RichTextLabel" type="RichTextLabel" parent="UI stuff/MarginContainer"]
+material = SubResource( 9 )
+margin_right = 85.0
 margin_bottom = 92.0
-text = "top right
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 1
+bbcode_enabled = true
+bbcode_text = "[right]top right[/right]"
+meta_underlined = false
+text = "top right"
+scroll_active = false
 
-blocks:
-
-"
-align = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer"]
+[node name="MarginContainer2" type="MarginContainer" parent="UI stuff"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 3.0
 margin_top = 3.0
-margin_right = -128.0
+margin_right = -120.0
 margin_bottom = -104.0
 grow_horizontal = 0
 grow_vertical = 0
@@ -76,22 +116,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="CanvasLayer/MarginContainer2"]
-margin_right = 125.0
+[node name="RichTextLabel2" type="RichTextLabel" parent="UI stuff/MarginContainer2"]
+material = SubResource( 9 )
+margin_right = 133.0
 margin_bottom = 149.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 1
+meta_underlined = false
 text = "top left
-
-imagineee
-
-time: 99:99
-deaths: 20
-
 "
-__meta__ = {
-"_edit_use_anchors_": false
-}
+scroll_active = false
 
-[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer"]
+[node name="MarginContainer3" type="MarginContainer" parent="UI stuff"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 159.0
@@ -104,12 +140,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="CanvasLayer/MarginContainer3"]
-margin_right = 97.0
-margin_bottom = 16.0
-text = "pog or dog??"
-align = 2
-valign = 2
+[node name="Game" type="Node2D" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="Game"]
+material = SubResource( 6 )
+margin_right = 256.0
+margin_bottom = 256.0
+rect_min_size = Vector2( 1, 0 )
+texture = ExtResource( 1 )
+expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TileMap" type="TileMap" parent="Game"]
+tile_set = SubResource( 7 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 0, 1, 786450, 1, 1, 786448, 2, 1, 786448, 3, 1, 786448, 4, 1, 786448, 5, 1, 786448, 6, 1, 786448, 7, 1, 786448, 8, 1, 786448, 9, 1, 786448, 10, 1, 786448, 11, 1, 786448, 12, 1, 786448, 13, 1, 786448, 14, 1, 786448, 15, 1, 786450, 65536, 1, 917522, 65551, 1, 917522, 131072, 1, 917522, 131087, 1, 917522, 196608, 1, 917522, 196623, 1, 917522, 262144, 1, 917522, 262159, 1, 917522, 327680, 1, 917522, 327695, 1, 917522, 393216, 1, 917522, 393231, 1, 917522, 458752, 1, 917522, 458767, 1, 917522, 524288, 1, 917522, 524303, 1, 917522, 589824, 1, 917522, 589839, 1, 917522, 655360, 1, 917522, 655375, 1, 917522, 720896, 1, 917522, 720911, 1, 917522, 786432, 1, 917522, 786447, 1, 917522, 851968, 1, 917522, 851983, 1, 917522, 917504, 1, 917522, 917519, 1, 917522, 983040, 1, 786450, 983041, 1, 786448, 983042, 1, 786448, 983043, 1, 786448, 983044, 1, 786448, 983045, 1, 786448, 983046, 1, 786448, 983047, 1, 786448, 983048, 1, 786448, 983049, 1, 786448, 983050, 1, 786448, 983051, 1, 786448, 983052, 1, 786448, 983053, 1, 786448, 983054, 1, 786448, 983055, 1, 786450 )

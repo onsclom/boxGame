@@ -1,7 +1,6 @@
 [gd_scene format=2]
 
 [node name="CPUParticles2D" type="CPUParticles2D"]
-modulate = Color( 0.231373, 0.231373, 0.231373, 1 )
 position = Vector2( -100, -25 )
 amount = 25
 lifetime = 14.0

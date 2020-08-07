@@ -1,0 +1,34 @@
+[remap]
+
+importer="texture"
+type="StreamTexture"
+path="res://.import/tile_0174.png-2e02f7253efd8f73b2cc3e903d244ab5.stex"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://artPack/Tiles/Default/tile_0174.png"
+dest_files=[ "res://.import/tile_0174.png-2e02f7253efd8f73b2cc3e903d244ab5.stex" ]
+
+[params]
+
+compress/mode=0
+compress/lossy_quality=0.7
+compress/hdr_mode=0
+compress/bptc_ldr=0
+compress/normal_map=0
+flags/repeat=0
+flags/filter=true
+flags/mipmaps=false
+flags/anisotropic=false
+flags/srgb=2
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/HDR_as_SRGB=false
+process/invert_color=false
+stream=false
+size_limit=0
+detect_3d=true
+svg/scale=1.0
