@@ -68,6 +68,7 @@ script = ExtResource( 5 )
 position = Vector2( 0, 2 )
 frames = SubResource( 1 )
 animation = "walking"
+frame = 2
 playing = true
 offset = Vector2( 0, -2 )
 
