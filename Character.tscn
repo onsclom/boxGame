@@ -1,0 +1,242 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://artPack/Tiles/Transparent/tile_0323.png" type="Texture" id=1]
+[ext_resource path="res://artPack/Tiles/Transparent/tile_0322.png" type="Texture" id=2]
+[ext_resource path="res://artPack/Tiles/Transparent/tile_0321.png" type="Texture" id=3]
+[ext_resource path="res://artPack/Tiles/Transparent/tile_0320.png" type="Texture" id=4]
+[ext_resource path="res://Character.gd" type="Script" id=5]
+[ext_resource path="res://artPack/Tiles/Transparent/tile_0324.png" type="Texture" id=6]
+[ext_resource path="res://artPack/Tiles/idleAnimation.png" type="Texture" id=7]
+[ext_resource path="res://sounds/walk.wav" type="AudioStream" id=8]
+[ext_resource path="res://sounds/jump.wav" type="AudioStream" id=9]
+[ext_resource path="res://sounds/land.wav" type="AudioStream" id=10]
+[ext_resource path="res://sounds/slide.wav" type="AudioStream" id=11]
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 7 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 7 )
+region = Rect2( 32, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 7 )
+region = Rect2( 48, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 7 )
+region = Rect2( 64, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "jumping",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ), ExtResource( 3 ), ExtResource( 2 ) ],
+"loop": true,
+"name": "walking",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ) ],
+"loop": true,
+"name": "dead",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 4, 4 )
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0.0128205, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[node name="Character" type="KinematicBody2D"]
+script = ExtResource( 5 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, 2 )
+frames = SubResource( 1 )
+animation = "walking"
+frame = 2
+playing = true
+offset = Vector2( 0, -2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 4 )
+shape = SubResource( 2 )
+
+[node name="Left" type="RayCast2D" parent="."]
+position = Vector2( 0, 1 )
+enabled = true
+cast_to = Vector2( -7, 0 )
+
+[node name="Left2" type="RayCast2D" parent="."]
+position = Vector2( 0, 7 )
+enabled = true
+cast_to = Vector2( -7, 0 )
+
+[node name="Right" type="RayCast2D" parent="."]
+position = Vector2( 0, 1 )
+enabled = true
+cast_to = Vector2( 7, 0 )
+
+[node name="GroundCheck" type="RayCast2D" parent="."]
+position = Vector2( -4, 1 )
+enabled = true
+cast_to = Vector2( 0, 12 )
+
+[node name="GroundCheck2" type="RayCast2D" parent="."]
+position = Vector2( 4, 1 )
+enabled = true
+cast_to = Vector2( 0, 12 )
+
+[node name="Right2" type="RayCast2D" parent="."]
+position = Vector2( 0, 7 )
+enabled = true
+cast_to = Vector2( 7, 0 )
+
+[node name="JumpParticles" type="CPUParticles2D" parent="."]
+position = Vector2( 0, 8 )
+emitting = false
+amount = 20
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+local_coords = false
+emission_shape = 2
+emission_rect_extents = Vector2( 5, 1 )
+spread = 177.86
+gravity = Vector2( 0, 0 )
+initial_velocity = 5.0
+initial_velocity_random = 0.31
+angle = 720.0
+angle_random = 1.0
+scale_amount = 4.0
+scale_amount_curve = SubResource( 3 )
+
+[node name="LeftWallJump" type="CPUParticles2D" parent="."]
+position = Vector2( -5, 4 )
+rotation = 1.5708
+emitting = false
+amount = 20
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+local_coords = false
+emission_shape = 2
+emission_rect_extents = Vector2( 5, 1 )
+spread = 177.86
+gravity = Vector2( 0, 0 )
+initial_velocity = 5.0
+initial_velocity_random = 0.31
+angle = 720.0
+angle_random = 1.0
+scale_amount = 4.0
+scale_amount_curve = SubResource( 3 )
+
+[node name="RightWallJump" type="CPUParticles2D" parent="."]
+position = Vector2( 5, 4 )
+rotation = 1.5708
+emitting = false
+amount = 20
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+local_coords = false
+emission_shape = 2
+emission_rect_extents = Vector2( 5, 1 )
+spread = 177.86
+gravity = Vector2( 0, 0 )
+initial_velocity = 5.0
+initial_velocity_random = 0.31
+angle = 720.0
+angle_random = 1.0
+scale_amount = 4.0
+scale_amount_curve = SubResource( 3 )
+
+[node name="LeftParticles" type="CPUParticles2D" parent="."]
+position = Vector2( -5, 4 )
+emitting = false
+amount = 10
+lifetime = 0.5
+explosiveness = 0.33
+local_coords = false
+emission_shape = 1
+emission_sphere_radius = 1.0
+spread = 177.86
+gravity = Vector2( 0, 0 )
+initial_velocity = 5.0
+initial_velocity_random = 0.31
+angle = 720.0
+angle_random = 1.0
+scale_amount = 4.0
+scale_amount_curve = SubResource( 3 )
+
+[node name="WalkParticles" type="CPUParticles2D" parent="."]
+position = Vector2( 0, 8 )
+emitting = false
+amount = 5
+lifetime = 0.5
+explosiveness = 0.33
+local_coords = false
+emission_shape = 1
+emission_sphere_radius = 1.0
+spread = 177.86
+gravity = Vector2( 0, 0 )
+initial_velocity = 5.0
+initial_velocity_random = 0.31
+angle = 720.0
+angle_random = 1.0
+scale_amount = 3.0
+scale_amount_curve = SubResource( 3 )
+
+[node name="RightParticles" type="CPUParticles2D" parent="."]
+position = Vector2( 5, 4 )
+emitting = false
+amount = 10
+lifetime = 0.5
+explosiveness = 0.33
+local_coords = false
+emission_shape = 1
+emission_sphere_radius = 1.0
+spread = 177.86
+gravity = Vector2( 0, 0 )
+initial_velocity = 5.0
+initial_velocity_random = 0.31
+angle = 720.0
+angle_random = 1.0
+scale_amount = 4.0
+scale_amount_curve = SubResource( 3 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Walking" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+volume_db = 1.0
+pitch_scale = 0.75
+
+[node name="Sliding" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 11 )
+volume_db = 3.0
+pitch_scale = 4.0
+autoplay = true
+stream_paused = true
+
+[node name="Landing" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+pitch_scale = 0.6
+
+[node name="Jumping" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+pitch_scale = 0.3

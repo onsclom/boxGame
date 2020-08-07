@@ -1,35 +1,38 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://SideParticles.tscn" type="PackedScene" id=2]
 [ext_resource path="res://artPack/Tilemap/monochrome_tilemap_packed.png" type="Texture" id=3]
+[ext_resource path="res://ColorChanger.gd" type="Script" id=4]
+[ext_resource path="res://Character.tscn" type="PackedScene" id=5]
+[ext_resource path="res://block.tscn" type="PackedScene" id=6]
 
-[sub_resource type="Shader" id=8]
+[sub_resource type="Shader" id=1]
 code = "
 "
 
-[sub_resource type="ShaderMaterial" id=9]
-shader = SubResource( 8 )
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
 
-[sub_resource type="Shader" id=5]
+[sub_resource type="Shader" id=3]
 code = "shader_type canvas_item;
 
 void fragment() {
     COLOR = vec4(0, 0, 0, 1);
 }"
 
-[sub_resource type="ShaderMaterial" id=6]
-shader = SubResource( 5 )
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
 
-[sub_resource type="TileSet" id=7]
+[sub_resource type="TileSet" id=5]
 0/name = "monochrome_tilemap_packed.png 0"
 0/texture = ExtResource( 3 )
 0/tex_offset = Vector2( 0, 0 )
 0/modulate = Color( 1, 1, 1, 1 )
-0/region = Rect2( 0, 0, 320, 320 )
+0/region = Rect2( 240, 144, 64, 64 )
 0/tile_mode = 2
 0/autotile/icon_coordinate = Vector2( 0, 0 )
-0/autotile/tile_size = Vector2( 32, 32 )
+0/autotile/tile_size = Vector2( 16, 16 )
 0/autotile/spacing = 0
 0/autotile/occluder_map = [  ]
 0/autotile/navpoly_map = [  ]
@@ -43,29 +46,10 @@ shader = SubResource( 5 )
 0/shape_one_way_margin = 0.0
 0/shapes = [  ]
 0/z_index = 0
-1/name = "monochrome_tilemap_packed.png 1"
-1/texture = ExtResource( 3 )
-1/tex_offset = Vector2( 0, 0 )
-1/modulate = Color( 1, 1, 1, 1 )
-1/region = Rect2( 0, 0, 320, 320 )
-1/tile_mode = 2
-1/autotile/icon_coordinate = Vector2( 0, 0 )
-1/autotile/tile_size = Vector2( 16, 16 )
-1/autotile/spacing = 0
-1/autotile/occluder_map = [  ]
-1/autotile/navpoly_map = [  ]
-1/autotile/priority_map = [  ]
-1/autotile/z_index_map = [  ]
-1/occluder_offset = Vector2( 0, 0 )
-1/navigation_offset = Vector2( 0, 0 )
-1/shape_offset = Vector2( 0, 0 )
-1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-1/shape_one_way = false
-1/shape_one_way_margin = 0.0
-1/shapes = [  ]
-1/z_index = 0
 
 [node name="Node2D" type="Node2D"]
+script = ExtResource( 4 )
+sat = 0.9
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 128, 128 )
@@ -83,8 +67,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 167.0
 margin_top = 3.0
-margin_right = -4.0
-margin_bottom = -161.0
+margin_right = -3.0
+margin_bottom = 3.0
 grow_horizontal = 0
 grow_vertical = 2
 __meta__ = {
@@ -92,9 +76,8 @@ __meta__ = {
 }
 
 [node name="RichTextLabel" type="RichTextLabel" parent="UI stuff/MarginContainer"]
-material = SubResource( 9 )
-margin_right = 85.0
-margin_bottom = 92.0
+margin_right = 86.0
+margin_bottom = 256.0
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
 bbcode_enabled = true
@@ -108,8 +91,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 3.0
 margin_top = 3.0
-margin_right = -120.0
-margin_bottom = -104.0
+margin_right = 3.0
+margin_bottom = 3.0
 grow_horizontal = 0
 grow_vertical = 0
 __meta__ = {
@@ -117,9 +100,9 @@ __meta__ = {
 }
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="UI stuff/MarginContainer2"]
-material = SubResource( 9 )
-margin_right = 133.0
-margin_bottom = 149.0
+material = SubResource( 2 )
+margin_right = 256.0
+margin_bottom = 256.0
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
 meta_underlined = false
@@ -130,20 +113,20 @@ scroll_active = false
 [node name="MarginContainer3" type="MarginContainer" parent="UI stuff"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 159.0
-margin_top = 240.0
-margin_right = -3.0
-margin_bottom = -3.0
 grow_horizontal = 0
 grow_vertical = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="CanvasModulate" type="CanvasModulate" parent="UI stuff"]
+z_index = 4096
+color = Color( 1, 0.46, 0.46, 1 )
+
 [node name="Game" type="Node2D" parent="."]
 
 [node name="TextureRect" type="TextureRect" parent="Game"]
-material = SubResource( 6 )
+material = SubResource( 4 )
 margin_right = 256.0
 margin_bottom = 256.0
 rect_min_size = Vector2( 1, 0 )
@@ -154,7 +137,76 @@ __meta__ = {
 }
 
 [node name="TileMap" type="TileMap" parent="Game"]
-tile_set = SubResource( 7 )
+tile_set = SubResource( 5 )
 cell_size = Vector2( 16, 16 )
 format = 1
-tile_data = PoolIntArray( 0, 1, 786450, 1, 1, 786448, 2, 1, 786448, 3, 1, 786448, 4, 1, 786448, 5, 1, 786448, 6, 1, 786448, 7, 1, 786448, 8, 1, 786448, 9, 1, 786448, 10, 1, 786448, 11, 1, 786448, 12, 1, 786448, 13, 1, 786448, 14, 1, 786448, 15, 1, 786450, 65536, 1, 917522, 65551, 1, 917522, 131072, 1, 917522, 131087, 1, 917522, 196608, 1, 917522, 196623, 1, 917522, 262144, 1, 917522, 262159, 1, 917522, 327680, 1, 917522, 327695, 1, 917522, 393216, 1, 917522, 393231, 1, 917522, 458752, 1, 917522, 458767, 1, 917522, 524288, 1, 917522, 524303, 1, 917522, 589824, 1, 917522, 589839, 1, 917522, 655360, 1, 917522, 655375, 1, 917522, 720896, 1, 917522, 720911, 1, 917522, 786432, 1, 917522, 786447, 1, 917522, 851968, 1, 917522, 851983, 1, 917522, 917504, 1, 917522, 917519, 1, 917522, 983040, 1, 786450, 983041, 1, 786448, 983042, 1, 786448, 983043, 1, 786448, 983044, 1, 786448, 983045, 1, 786448, 983046, 1, 786448, 983047, 1, 786448, 983048, 1, 786448, 983049, 1, 786448, 983050, 1, 786448, 983051, 1, 786448, 983052, 1, 786448, 983053, 1, 786448, 983054, 1, 786448, 983055, 1, 786450 )
+tile_data = PoolIntArray( 0, 0, 196611, 1, 0, 196609, 2, 0, 196609, 3, 0, 196609, 4, 0, 196609, 5, 0, 196609, 6, 0, 196609, 7, 0, 196609, 8, 0, 196609, 9, 0, 196609, 10, 0, 196609, 11, 0, 196609, 12, 0, 196609, 13, 0, 196609, 14, 0, 196609, 15, 0, 196611, 65536, 0, 65539, 65551, 0, 65539, 131072, 0, 65539, 131087, 0, 65539, 196608, 0, 65539, 196623, 0, 65539, 262144, 0, 65539, 262159, 0, 65539, 327680, 0, 65539, 327695, 0, 65539, 393216, 0, 65539, 393231, 0, 65539, 458752, 0, 65539, 458767, 0, 65539, 524288, 0, 65539, 524303, 0, 65539, 589824, 0, 65539, 589839, 0, 65539, 655360, 0, 65539, 655375, 0, 65539, 720896, 0, 65539, 720911, 0, 65539, 786432, 0, 65539, 786447, 0, 65539, 851968, 0, 65539, 851983, 0, 65539, 917504, 0, 65539, 917519, 0, 65539, 983040, 0, 196611, 983041, 0, 196609, 983042, 0, 196609, 983043, 0, 196609, 983044, 0, 196609, 983045, 0, 196609, 983046, 0, 196609, 983047, 0, 196609, 983048, 0, 196609, 983049, 0, 196609, 983050, 0, 196609, 983051, 0, 196609, 983052, 0, 196609, 983053, 0, 196609, 983054, 0, 196609, 983055, 0, 196611 )
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+
+[node name="Character" parent="." instance=ExtResource( 5 )]
+position = Vector2( 96.7501, 157.886 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 16, 240, 16, 256, 240, 256, 240, 240, 16, 240, 16, 256 )
+
+[node name="block" parent="StaticBody2D/CollisionPolygon2D" instance=ExtResource( 6 )]
+position = Vector2( 160, 208 )
+
+[node name="block6" parent="StaticBody2D/CollisionPolygon2D" instance=ExtResource( 6 )]
+position = Vector2( 112, 176 )
+
+[node name="block7" parent="StaticBody2D/CollisionPolygon2D" instance=ExtResource( 6 )]
+position = Vector2( 160, 176 )
+
+[node name="block8" parent="StaticBody2D/CollisionPolygon2D" instance=ExtResource( 6 )]
+position = Vector2( 112, 160 )
+
+[node name="block12" parent="StaticBody2D/CollisionPolygon2D" instance=ExtResource( 6 )]
+position = Vector2( 128, 192 )
+
+[node name="block13" parent="StaticBody2D/CollisionPolygon2D" instance=ExtResource( 6 )]
+position = Vector2( 128, 176 )
+
+[node name="block14" parent="StaticBody2D/CollisionPolygon2D" instance=ExtResource( 6 )]
+position = Vector2( 128, 160 )
+
+[node name="block15" parent="StaticBody2D/CollisionPolygon2D" instance=ExtResource( 6 )]
+position = Vector2( 128, 144 )
+
+[node name="block9" parent="StaticBody2D/CollisionPolygon2D" instance=ExtResource( 6 )]
+position = Vector2( 160, 160 )
+
+[node name="block10" parent="StaticBody2D/CollisionPolygon2D" instance=ExtResource( 6 )]
+position = Vector2( 112, 144 )
+
+[node name="block11" parent="StaticBody2D/CollisionPolygon2D" instance=ExtResource( 6 )]
+position = Vector2( 160, 144 )
+
+[node name="block2" parent="StaticBody2D/CollisionPolygon2D" instance=ExtResource( 6 )]
+position = Vector2( 88, 216 )
+
+[node name="block3" parent="StaticBody2D/CollisionPolygon2D" instance=ExtResource( 6 )]
+position = Vector2( 216, 208 )
+
+[node name="block4" parent="StaticBody2D/CollisionPolygon2D" instance=ExtResource( 6 )]
+position = Vector2( 160, 192 )
+
+[node name="block5" parent="StaticBody2D/CollisionPolygon2D" instance=ExtResource( 6 )]
+position = Vector2( 112, 192 )
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2( 0, -240 )
+polygon = PoolVector2Array( 16, 240, 16, 256, 240, 256, 240, 240, 16, 240, 16, 256 )
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2( 256, 0 )
+rotation = 1.5708
+polygon = PoolVector2Array( 16, 240, 16, 256, 240, 256, 240, 240, 16, 240, 16, 256 )
+
+[node name="CollisionPolygon2D4" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2( 496, 0 )
+rotation = 1.5708
+polygon = PoolVector2Array( 16, 240, 16, 256, 240, 256, 240, 240, 16, 240, 16, 256 )
