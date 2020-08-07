@@ -5,7 +5,7 @@ const JUMP_FORCE = 200
 const GRAVITY = 10
 const MAX_FALL_SPEED = 200
 const MAX_SLIDE_SPEED = 35
-
+const doubleJumpBug = true
 
 var y_velo = 0
 var facing_right = false
@@ -28,6 +28,9 @@ var rotationGoal = 0
 
 var maxFallSpeed = 200
 var maxSquish = .65
+
+var squashedTotalTime = .25
+var squashedTime = squashedTotalTime
 
 var prevYvelo = 0
 
@@ -61,6 +64,9 @@ func _physics_process(delta):
 	 
 	var result = move_and_slide(Vector2(move_dir * MOVE_SPEED, y_velo), Vector2(0, -1))
 	
+	if doubleJumpBug == false:
+		grounded = is_on_floor()
+	
 	y_velo = result.y
 	if result.x == 0 and wallJumpVel != 0:
 		wallJumpVel = 0
@@ -69,10 +75,12 @@ func _physics_process(delta):
 		$AnimatedSprite.play("jumping")
 		
 	
-	if (!grounded and timeSinceGrounded ==0) or timeSinceGrounded > 0:
-		timeSinceGrounded += delta
+#	if (!grounded and timeSinceGrounded ==0) or timeSinceGrounded >= 0:
+#		timeSinceGrounded += delta
 	if grounded:
 		timeSinceGrounded = 0
+	else:
+		timeSinceGrounded += delta
 	
 	y_velo += GRAVITY
 
@@ -80,8 +88,8 @@ func _physics_process(delta):
 		$JumpParticles.restart()
 		$JumpParticles.emitting = true
 		y_velo = -JUMP_FORCE
-		timeSinceGrounded = coyoteTime
-		jumpedLast = jumpRememberTime
+		timeSinceGrounded = 100
+		jumpedLast = jumpRememberTime+1
 		$Jumping.playing = true
 	elif ($Left.is_colliding() or $Left2.is_colliding()) and (Input.is_action_just_pressed("jump") or jumpedLast < jumpRememberTime):
 		$LeftWallJump.restart()
@@ -89,8 +97,8 @@ func _physics_process(delta):
 		y_velo = -JUMP_FORCE
 		wallJumpVel = 1
 		wallJumpTime = 0
-		timeSinceGrounded = coyoteTime
-		jumpedLast = jumpRememberTime
+		timeSinceGrounded = coyoteTime+1
+		jumpedLast = jumpRememberTime+1
 		$Jumping.playing = true
 		
 	elif ($Right.is_colliding() or $Right2.is_colliding()) and (Input.is_action_just_pressed("jump") or jumpedLast < jumpRememberTime):
@@ -99,8 +107,8 @@ func _physics_process(delta):
 		y_velo = -JUMP_FORCE
 		wallJumpVel = -1
 		wallJumpTime = 0
-		timeSinceGrounded = coyoteTime
-		jumpedLast = jumpRememberTime
+		timeSinceGrounded = coyoteTime+1
+		jumpedLast = jumpRememberTime+1
 		$Jumping.playing = true
 		
 	elif Input.is_action_just_pressed("jump"):
@@ -161,6 +169,7 @@ func _physics_process(delta):
 		$JumpParticles.emitting = true	
 		if not $Landing.playing:
 			$Landing.play()
+			squashedTime = 0
 			
 	prevYvelo = y_velo
 	
@@ -168,7 +177,9 @@ func _physics_process(delta):
 	if move_dir != 0 and (grounded):
 		$WalkParticles.emitting = true
 		
-				
+	squashedTime += delta
+	if squashedTime < squashedTotalTime:
+		$AnimatedSprite.scale.x = 1.3
 	
 #	if grounded:
 #		if move_dir == 0:

@@ -7,7 +7,7 @@ extends Node2D
 onready var firstMod = $CanvasModulate
 onready var secondMod = get_node("UI stuff/CanvasModulate")
 
-export var sat = .6
+export var sat = .1
 export var v = 1
 var h
 

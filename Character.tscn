@@ -68,7 +68,7 @@ script = ExtResource( 5 )
 position = Vector2( 0, 2 )
 frames = SubResource( 1 )
 animation = "walking"
-frame = 2
+frame = 1
 playing = true
 offset = Vector2( 0, -2 )
 
@@ -226,13 +226,6 @@ stream = ExtResource( 8 )
 volume_db = 1.0
 pitch_scale = 0.75
 
-[node name="Sliding" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource( 11 )
-volume_db = 3.0
-pitch_scale = 4.0
-autoplay = true
-stream_paused = true
-
 [node name="Landing" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 10 )
 pitch_scale = 0.6
@@ -240,3 +233,9 @@ pitch_scale = 0.6
 [node name="Jumping" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )
 pitch_scale = 0.3
+
+[node name="Sliding" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+volume_db = -5.532
+pitch_scale = 3.0
+autoplay = true
