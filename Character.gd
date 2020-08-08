@@ -72,7 +72,7 @@ func _physics_process(delta):
 	if wallJumpTime < wallJumpPenaltyTime and grounded == false and wallJumpVel != 0:
 		move_dir = wallJumpVel
 	 
-	var result = move_and_slide(Vector2(move_dir * MOVE_SPEED, y_velo), Vector2(0, -1), false, 4, PI/4, false)
+	var result = move_and_slide(Vector2(move_dir * MOVE_SPEED, y_velo), Vector2(0, -1), true, 4, 0.9, false)
 	
 	if doubleJumpBug == false:
 		grounded = is_on_floor()
@@ -191,7 +191,7 @@ func _physics_process(delta):
 	if squashedTime < squashedTotalTime:
 		$AnimatedSprite.scale.x = 1.3
 	
-	var push = 10
+	var push = 5
 	
 	if timeSinceGrounded < .05:
 		for index in get_slide_count():
@@ -202,7 +202,7 @@ func _physics_process(delta):
 				box.velocity += -collision.normal * push
 			
 		
-	boxStuff()
+	boxStuff(move_dir)
 		
 			#collision.collider.velocity = Vector2(0,0)
 			#collision.collider.velocity += (collision.position - collision.collider.position ) * push
@@ -215,7 +215,7 @@ func _physics_process(delta):
 #		play_anim("jump")
 
 
-func boxStuff():
+func boxStuff(move_dir):
 	$Selected.visible = false
 	var closest
 	var closestDist
@@ -228,6 +228,21 @@ func boxStuff():
 	
 	if closestDist!=null and sqrt(closestDist) > pickupDistance:
 		closest = null
+		
+	
+	#im doing this after so moving the block is delayed by a physics frame
+	#if player is hitting action without a block, pick it up
+	if heldBlock == null and closest and Input.is_action_just_pressed("action"):
+		heldBlock = closest
+		heldBlock.get_node("CollisionShape2D").disabled = true
+	elif Input.is_action_just_pressed("action") and heldBlock != null:
+		heldBlock.global_position = heldBlock.get_node("Sprite").global_position
+		heldBlock.get_node("Sprite").position = Vector2(0,0)
+		heldBlock.held = false
+		print(y_velo)
+		heldBlock.velocity = Vector2(move_dir*MOVE_SPEED, y_velo)
+		heldBlock = null
+		
 			
 	#only show indicator if can pickup block
 	if heldBlock == null and closest != null:
@@ -244,16 +259,6 @@ func boxStuff():
 		else:
 			heldBlock.get_node("Sprite").global_position = $RightHold.global_position
 	
-	#im doing this after so moving the block is delayed by a physics frame
-	#if player is hitting action without a block, pick it up
-	if heldBlock == null and closest and Input.is_action_just_pressed("action"):
-		heldBlock = closest
-		heldBlock.get_node("CollisionShape2D").disabled = true
-	elif Input.is_action_just_pressed("action") and heldBlock != null:
-		heldBlock.global_position = heldBlock.get_node("Sprite").global_position
-		heldBlock.get_node("Sprite").position = Vector2(0,0)
-		heldBlock.held = false
-		heldBlock = null
 		
 		
 		

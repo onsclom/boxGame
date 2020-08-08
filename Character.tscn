@@ -56,8 +56,9 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=7]
-extents = Vector2( 4, 4 )
+[sub_resource type="CapsuleShape2D" id=7]
+radius = 4.0
+height = 0.0
 
 [sub_resource type="Curve" id=8]
 _data = [ Vector2( 0.0128205, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
@@ -260,6 +261,7 @@ autoplay = true
 position = Vector2( -40, -24 )
 z_index = 1
 frames = SubResource( 11 )
+frame = 1
 playing = true
 
 [node name="LeftHold" type="Position2D" parent="."]

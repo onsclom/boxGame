@@ -7,6 +7,7 @@ extends KinematicBody2D
 
 var velocity = Vector2(0,0)
 var gravity = 10
+const MAX_FALL_SPEED = 100
 var held = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -26,19 +27,21 @@ func _physics_process(delta):
 	
 	velocity.y += gravity
 	
+	velocity.y = min(velocity.y, MAX_FALL_SPEED)
+	
 	var grounded = ($GroundCheck.is_colliding() or $GroundCheck2.is_colliding())
 	
 	if grounded:
 		velocity.x = lerp(velocity.x, 0, .1)
 		
 	if is_on_floor():
-		velocity.y = 0
+		velocity.y = min(velocity.y, 0)
 		
 	var snap = Vector2.ZERO
 	velocity.y = move_and_slide_with_snap( velocity, snap , Vector2(0,-1) ).y 
 	#move_and_slide(velocity*delta, Vector2(0,-1)).y * (1/delta)
 	
-	var push = 100
+	var push = 5
 	
 	if grounded:
 		for index in get_slide_count():
