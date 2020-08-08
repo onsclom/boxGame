@@ -34,7 +34,13 @@ var squashedTime = squashedTotalTime
 
 var prevYvelo = 0
 
+var heldBlock 
+var lastDir = -1
+
+var pickupDistance = 20
+
 func _ready():
+	set_process_priority(1)
 	#AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), false)
 	pass 
 	
@@ -47,6 +53,10 @@ func _physics_process(delta):
 		move_dir += 1
 	if Input.is_action_pressed("move_left"):
 		move_dir -= 1
+		
+	if move_dir != 0:
+		#update lastDir for block
+		lastDir = move_dir
 	
 	if grounded and move_dir != 0:
 		$AnimatedSprite.play("walking")
@@ -62,7 +72,7 @@ func _physics_process(delta):
 	if wallJumpTime < wallJumpPenaltyTime and grounded == false and wallJumpVel != 0:
 		move_dir = wallJumpVel
 	 
-	var result = move_and_slide(Vector2(move_dir * MOVE_SPEED, y_velo), Vector2(0, -1))
+	var result = move_and_slide(Vector2(move_dir * MOVE_SPEED, y_velo), Vector2(0, -1), false, 4, PI/4, false)
 	
 	if doubleJumpBug == false:
 		grounded = is_on_floor()
@@ -70,6 +80,7 @@ func _physics_process(delta):
 	y_velo = result.y
 	if result.x == 0 and wallJumpVel != 0:
 		wallJumpVel = 0
+	y_velo += GRAVITY
 	
 	if timeSinceGrounded > .05:
 		$AnimatedSprite.play("jumping")
@@ -81,8 +92,7 @@ func _physics_process(delta):
 		timeSinceGrounded = 0
 	else:
 		timeSinceGrounded += delta
-	
-	y_velo += GRAVITY
+
 
 	if (grounded or timeSinceGrounded < coyoteTime) and (Input.is_action_just_pressed("jump") or jumpedLast < jumpRememberTime):
 		$JumpParticles.restart()
@@ -181,6 +191,21 @@ func _physics_process(delta):
 	if squashedTime < squashedTotalTime:
 		$AnimatedSprite.scale.x = 1.3
 	
+	var push = 10
+	
+	if timeSinceGrounded < .05:
+		for index in get_slide_count():
+			var collision = get_slide_collision(index)
+			if collision.collider.is_in_group("bodies"):
+				var box = collision.get_collider()
+				
+				box.velocity += -collision.normal * push
+			
+		
+	boxStuff()
+		
+			#collision.collider.velocity = Vector2(0,0)
+			#collision.collider.velocity += (collision.position - collision.collider.position ) * push
 #	if grounded:
 #		if move_dir == 0:
 #			play_anim("idle")
@@ -188,3 +213,47 @@ func _physics_process(delta):
 #			play_anim("walk")
 #	else:
 #		play_anim("jump")
+
+
+func boxStuff():
+	$Selected.visible = false
+	var closest
+	var closestDist
+	for body in get_tree().get_nodes_in_group("bodies"):
+		var curDist = global_position.distance_squared_to(body.global_position)
+		
+		if closestDist == null or curDist < closestDist:
+			closestDist = curDist
+			closest = body
+	
+	if closestDist!=null and sqrt(closestDist) > pickupDistance:
+		closest = null
+			
+	#only show indicator if can pickup block
+	if heldBlock == null and closest != null:
+		$Selected.visible = true			
+		$Selected.global_position = closest.global_position
+		
+	if heldBlock:
+		heldBlock.held = true
+		heldBlock.get_node("CollisionShape2D").disabled = true
+	
+	
+		if lastDir == -1:
+			heldBlock.get_node("Sprite").global_position = $LeftHold.global_position
+		else:
+			heldBlock.get_node("Sprite").global_position = $RightHold.global_position
+	
+	#im doing this after so moving the block is delayed by a physics frame
+	#if player is hitting action without a block, pick it up
+	if heldBlock == null and closest and Input.is_action_just_pressed("action"):
+		heldBlock = closest
+		heldBlock.get_node("CollisionShape2D").disabled = true
+	elif Input.is_action_just_pressed("action") and heldBlock != null:
+		heldBlock.global_position = heldBlock.get_node("Sprite").global_position
+		heldBlock.get_node("Sprite").position = Vector2(0,0)
+		heldBlock.held = false
+		heldBlock = null
+		
+		
+		

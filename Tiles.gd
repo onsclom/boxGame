@@ -5,15 +5,17 @@ extends Node2D
 # var a = 2
 # var b = "text"
 onready var block = preload("res://block.tscn")
+onready var rigidblock = preload("res://RigidbodyBlock.tscn")
 var blocks = []
 var blockAmount = 16
 var blockSize = 16
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	makeLevel()
+	makeLevel(0)
+	pass
 					
-func makeLevel():
+func makeLevel(rngAmount):
 	for child in get_children():
 		child.queue_free()
 	
@@ -28,8 +30,11 @@ func makeLevel():
 			else:
 				var rng = RandomNumberGenerator.new()
 				rng.randomize()
-				if (rng.randf_range(0,1) > .8):
+				var randNum = rng.randf_range(0,1)
+				if (randNum < rngAmount* .9):
 					blocks[x][y] = 1
+				elif (randNum < rngAmount):
+					blocks[x][y] = 2
 					
 	for x in range(blockAmount):
 		for y in range(blockAmount):
@@ -46,8 +51,13 @@ func makeLevel():
 						if blocks[neighbor.x][neighbor.y] == 1:
 							newBlock.sides[side].visible = false
 					side += 1
+			if blocks[x][y] == 2:
+				var newBlock = rigidblock.instance()
+				add_child(newBlock)
+				newBlock.global_position = Vector2(blockSize*x+.5*blockSize, blockSize*y+.5*blockSize)
+					
 					
 func _process(delta):
 	if Input.is_action_just_pressed("refresh"):
-		makeLevel()
+		makeLevel(.2)
 	pass

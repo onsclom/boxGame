@@ -25,3 +25,6 @@ func _process(delta):
 	var newColor = Color.from_hsv(sin(time/8.0)/2.0+.5, sat, v )
 	firstMod.color = newColor
 	secondMod.color = newColor
+
+func set_velocity(test):
+	print("wow")
