@@ -38,7 +38,7 @@ func _physics_process(delta):
 		velocity.y = min(velocity.y, 0)
 		
 	var snap = Vector2.ZERO
-	velocity.y = move_and_slide_with_snap( velocity, snap , Vector2(0,-1) ).y 
+	velocity = move_and_slide_with_snap( velocity, snap , Vector2(0,-1) )
 	#move_and_slide(velocity*delta, Vector2(0,-1)).y * (1/delta)
 	
 	var push = 5

@@ -58,8 +58,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 3.0
 margin_top = 3.0
-margin_right = -168.0
-margin_bottom = -208.0
+margin_right = -136.0
+margin_bottom = -88.0
 grow_horizontal = 0
 grow_vertical = 0
 __meta__ = {
@@ -68,13 +68,19 @@ __meta__ = {
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="UI stuff/MarginContainer2"]
 material = SubResource( 2 )
-margin_right = 85.0
-margin_bottom = 45.0
+margin_right = 117.0
+margin_bottom = 165.0
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
 meta_underlined = false
-text = "top left
-"
+text = "move:
+arrow keys
+
+jump:
+c 
+
+pickup/throw:
+x"
 scroll_active = false
 
 [node name="CanvasModulate" type="CanvasModulate" parent="UI stuff"]
