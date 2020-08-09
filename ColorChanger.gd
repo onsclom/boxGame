@@ -26,5 +26,3 @@ func _process(delta):
 	firstMod.color = newColor
 	secondMod.color = newColor
 
-func set_velocity(test):
-	print("wow")

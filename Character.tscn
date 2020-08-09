@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://artPack/Tiles/Transparent/tile_0323.png" type="Texture" id=1]
 [ext_resource path="res://artPack/Tiles/Transparent/tile_0322.png" type="Texture" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://sounds/land.wav" type="AudioStream" id=10]
 [ext_resource path="res://sounds/slide.wav" type="AudioStream" id=11]
 [ext_resource path="res://artPack/Tiles/selected.png" type="Texture" id=12]
+[ext_resource path="res://JumpParticles.tscn" type="PackedScene" id=13]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 7 )
@@ -56,7 +57,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=12]
+[sub_resource type="RectangleShape2D" id=7]
 extents = Vector2( 4, 3 )
 
 [sub_resource type="Curve" id=8]
@@ -78,7 +79,7 @@ animations = [ {
 "speed": 2.0
 } ]
 
-[sub_resource type="CircleShape2D" id=13]
+[sub_resource type="CircleShape2D" id=12]
 radius = 2.0
 
 [node name="Character" type="KinematicBody2D"]
@@ -89,13 +90,12 @@ script = ExtResource( 5 )
 position = Vector2( 0, 2 )
 frames = SubResource( 6 )
 animation = "walking"
-frame = 2
 playing = true
 offset = Vector2( 0, -2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 3 )
-shape = SubResource( 12 )
+shape = SubResource( 7 )
 
 [node name="Left" type="RayCast2D" parent="."]
 position = Vector2( 0, 1 )
@@ -127,24 +127,7 @@ position = Vector2( 0, 7 )
 enabled = true
 cast_to = Vector2( 7, 0 )
 
-[node name="JumpParticles" type="CPUParticles2D" parent="."]
-position = Vector2( 0, 8 )
-emitting = false
-amount = 20
-lifetime = 0.5
-one_shot = true
-explosiveness = 1.0
-local_coords = false
-emission_shape = 2
-emission_rect_extents = Vector2( 5, 1 )
-spread = 177.86
-gravity = Vector2( 0, 0 )
-initial_velocity = 5.0
-initial_velocity_random = 0.31
-angle = 720.0
-angle_random = 1.0
-scale_amount = 4.0
-scale_amount_curve = SubResource( 8 )
+[node name="JumpParticles" parent="." instance=ExtResource( 13 )]
 
 [node name="LeftWallJump" type="CPUParticles2D" parent="."]
 position = Vector2( -5, 4 )
@@ -265,18 +248,25 @@ autoplay = true
 position = Vector2( -40, -24 )
 z_index = 1
 frames = SubResource( 11 )
+frame = 1
 playing = true
 
 [node name="LeftHold" type="Position2D" parent="."]
 position = Vector2( -16, -4 )
+
+[node name="Top" type="Position2D" parent="."]
+position = Vector2( 0, -12 )
+
+[node name="Bottom" type="Position2D" parent="."]
+position = Vector2( 0, 19 )
 
 [node name="RightHold" type="Position2D" parent="."]
 position = Vector2( 16, -4 )
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
 position = Vector2( -2, 6 )
-shape = SubResource( 13 )
+shape = SubResource( 12 )
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
 position = Vector2( 2, 6 )
-shape = SubResource( 13 )
+shape = SubResource( 12 )

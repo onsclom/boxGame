@@ -37,6 +37,8 @@ var prevYvelo = 0
 var heldBlock 
 var lastDir = -1
 
+var move_dir = 0
+
 var pickupDistance = 20
 
 func _ready():
@@ -45,10 +47,15 @@ func _ready():
 	pass 
 	
 func _physics_process(delta):
-	
+
+	basicMovement(delta)
+		
+	boxStuff()
+
+func basicMovement(delta):
 	var grounded = is_on_floor()
 	
-	var move_dir = 0
+	move_dir = 0
 	if Input.is_action_pressed("move_right"):
 		move_dir += 1
 	if Input.is_action_pressed("move_left"):
@@ -72,6 +79,7 @@ func _physics_process(delta):
 	if wallJumpTime < wallJumpPenaltyTime and grounded == false and wallJumpVel != 0:
 		move_dir = wallJumpVel
 	 
+	var prevVel = Vector2(0, y_velo)
 	var result = move_and_slide(Vector2(move_dir * MOVE_SPEED, y_velo), Vector2(0, -1), true, 4, 0.9, false)
 	
 	if doubleJumpBug == false:
@@ -82,7 +90,9 @@ func _physics_process(delta):
 		wallJumpVel = 0
 	y_velo += GRAVITY
 	
-	if $GroundCheck.is_colliding()==false and $GroundCheck2.is_colliding()==false:
+	var GroundRays = $GroundCheck.is_colliding()==true or $GroundCheck2.is_colliding()==true
+	
+	if GroundRays == false:
 		$AnimatedSprite.play("jumping")
 		
 	
@@ -92,7 +102,6 @@ func _physics_process(delta):
 		timeSinceGrounded = 0
 	else:
 		timeSinceGrounded += delta
-
 
 	if (grounded or timeSinceGrounded < coyoteTime) and (Input.is_action_just_pressed("jump") or jumpedLast < jumpRememberTime):
 		$JumpParticles.restart()
@@ -110,7 +119,6 @@ func _physics_process(delta):
 		timeSinceGrounded = coyoteTime+1
 		jumpedLast = jumpRememberTime+1
 		$Jumping.playing = true
-		
 	elif ($Right.is_colliding() or $Right2.is_colliding()) and (Input.is_action_just_pressed("jump") or jumpedLast < jumpRememberTime):
 		$RightWallJump.restart()
 		$RightWallJump.emitting=true
@@ -120,7 +128,6 @@ func _physics_process(delta):
 		timeSinceGrounded = coyoteTime+1
 		jumpedLast = jumpRememberTime+1
 		$Jumping.playing = true
-		
 	elif Input.is_action_just_pressed("jump"):
 		jumpedLast = 0
 		timeSinceGrounded = coyoteTime
@@ -174,7 +181,7 @@ func _physics_process(delta):
 		if not $Sliding.stream_paused:
 					$Sliding.stream_paused = true
 				
-	if prevYvelo>= 100 and ( $GroundCheck.is_colliding() or $GroundCheck2.is_colliding() ):
+	if prevYvelo>= 100 and ( GroundRays ):
 		$JumpParticles.restart()
 		$JumpParticles.emitting = true	
 		if not $Landing.playing:
@@ -190,31 +197,14 @@ func _physics_process(delta):
 	squashedTime += delta
 	if squashedTime < squashedTotalTime:
 		$AnimatedSprite.scale.x = 1.3
-	
-	var push = 0
-	
-	if timeSinceGrounded < .05:
-		for index in get_slide_count():
-			var collision = get_slide_collision(index)
-			if collision.collider.is_in_group("bodies"):
-				var box = collision.get_collider()
-
-				#box.velocity.x += -collision.normal.x * push
 		
-	boxStuff(move_dir)
-		
-			#collision.collider.velocity = Vector2(0,0)
-			#collision.collider.velocity += (collision.position - collision.collider.position ) * push
-#	if grounded:
-#		if move_dir == 0:
-#			play_anim("idle")
-#		else:
-#			play_anim("walk")
-#	else:
-#		play_anim("jump")
+	for index in get_slide_count():
+		var collision = get_slide_collision(index)
+		var strength = (collision.normal*prevVel).length_squared()
+		if strength > 1000:
+			GameManager.camera.add_trauma(.0015*sqrt(strength))
 
-
-func boxStuff(move_dir):
+func boxStuff():
 	$Selected.visible = false
 	var closest
 	var closestDist
@@ -228,26 +218,6 @@ func boxStuff(move_dir):
 	if closestDist!=null and sqrt(closestDist) > pickupDistance:
 		closest = null
 		
-	
-	#im doing this after so moving the block is delayed by a physics frame
-	#if player is hitting action without a block, pick it up
-	if heldBlock == null and closest and Input.is_action_just_pressed("action"):
-		heldBlock = closest
-		heldBlock.get_node("CollisionShape2D").disabled = true
-	elif Input.is_action_just_pressed("action") and heldBlock != null:
-		heldBlock.global_position = heldBlock.get_node("Sprite").global_position
-		heldBlock.get_node("Sprite").position = Vector2(0,0)
-		heldBlock.held = false
-		print(y_velo)
-		heldBlock.velocity = Vector2(move_dir*MOVE_SPEED, y_velo)
-		heldBlock = null
-		
-			
-	#only show indicator if can pickup block
-	if heldBlock == null and closest != null:
-		$Selected.visible = true
-		$Selected.global_position = closest.global_position
-		
 	if heldBlock:
 		heldBlock.held = true
 		heldBlock.get_node("CollisionShape2D").disabled = true
@@ -257,6 +227,38 @@ func boxStuff(move_dir):
 			heldBlock.get_node("Sprite").global_position = $LeftHold.global_position
 		else:
 			heldBlock.get_node("Sprite").global_position = $RightHold.global_position
+			
+		if Input.is_action_pressed("up"):
+			heldBlock.get_node("Sprite").global_position = $Top.global_position
+		elif Input.is_action_pressed("down"):
+			heldBlock.get_node("Sprite").global_position = $Bottom.global_position
+			
+		if heldBlock.get_node("Sprite").get_node("Area2D").get_overlapping_bodies().size() > 0:
+			heldBlock.get_node("Sprite").play("X")
+		else:
+			heldBlock.get_node("Sprite").play("default")
+	
+	#im doing this after so moving the block is delayed by a physics frame
+	#if player is hitting action without a block, pick it up
+	if heldBlock == null and closest and Input.is_action_just_pressed("action"):
+		heldBlock = closest
+		heldBlock.get_node("CollisionShape2D").disabled = true
+	elif Input.is_action_just_pressed("action") and heldBlock != null and heldBlock.get_node("Sprite").animation == "default":
+		heldBlock.global_position = heldBlock.get_node("Sprite").global_position
+		heldBlock.get_node("Sprite").position = Vector2(0,0)
+		heldBlock.held = false
+		print(y_velo)
+		heldBlock.velocity = Vector2(move_dir*MOVE_SPEED, y_velo)
+		heldBlock = null
+	elif Input.is_action_just_pressed("action") and heldBlock != null:
+		print("failed to place")
+		
+			
+	#only show indicator if can pickup block
+	if heldBlock == null and closest != null:
+		$Selected.visible = true
+		$Selected.global_position = closest.global_position
+	
 	
 		
 		

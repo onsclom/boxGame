@@ -1,17 +1,26 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Tiles.gd" type="Script" id=1]
 [ext_resource path="res://SideParticles.tscn" type="PackedScene" id=2]
 [ext_resource path="res://DigitalDiscoFont.tres" type="DynamicFont" id=3]
 [ext_resource path="res://ColorChanger.gd" type="Script" id=4]
 [ext_resource path="res://Character.tscn" type="PackedScene" id=5]
+[ext_resource path="res://ScreenShake.gd" type="Script" id=6]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0.0232558, 1 )
+colors = PoolColorArray( 0.121569, 0.121569, 0.121569, 1, 0.121569, 0.121569, 0.121569, 1 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+width = 25
+
+[sub_resource type="Shader" id=3]
 code = "
 "
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
 
 [node name="Node2d" type="Node2D"]
 script = ExtResource( 4 )
@@ -20,11 +29,14 @@ sat = 0.4
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 128, 128 )
 current = true
+script = ExtResource( 6 )
 
 [node name="CPUParticles2D" parent="." instance=ExtResource( 2 )]
 position = Vector2( 128, -32 )
-amount = 100
+amount = 50
+texture = SubResource( 2 )
 emission_rect_extents = Vector2( 300, 1 )
+scale_amount = 4.0
 
 [node name="UI stuff" type="CanvasLayer" parent="."]
 
@@ -67,13 +79,13 @@ __meta__ = {
 }
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="UI stuff/MarginContainer2"]
-material = SubResource( 2 )
+material = SubResource( 4 )
 margin_right = 125.0
 margin_bottom = 197.0
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
 meta_underlined = false
-text = "move:
+text = "move/aim:
 arrow keys
 
 jump:
