@@ -36,12 +36,12 @@ shape = SubResource( 1 )
 [node name="GroundCheck" type="RayCast2D" parent="."]
 position = Vector2( -7, 0 )
 enabled = true
-cast_to = Vector2( 0, 8.01 )
+cast_to = Vector2( 0, 8.1 )
 
 [node name="GroundCheck2" type="RayCast2D" parent="."]
 position = Vector2( 7, 0 )
 enabled = true
-cast_to = Vector2( 0, 8.01 )
+cast_to = Vector2( 0, 8.1 )
 
 [node name="Sprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )

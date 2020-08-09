@@ -49,8 +49,10 @@ func _physics_process(delta):
 	$Sliding.emitting = false
 	$Sliding2.emitting = false
 	if is_on_floor() and abs(velocity.x)>1:
-		$Sliding.emitting = true
-		$Sliding2.emitting = true
+		if $GroundCheck.is_colliding():
+			$Sliding.emitting = true
+		elif $GroundCheck2.is_colliding():
+			$Sliding2.emitting = true
 	
 	for index in get_slide_count():
 		var collision = get_slide_collision(index)
@@ -78,4 +80,5 @@ func _physics_process(delta):
 			box.velocity.x += -collision.normal.x*abs(velocity.x/50)
 			#box.velocity.y = velocity.y
 			#parent = collision.collider
-	
+	if !held:			
+		$Sprite.global_position = Vector2(round(global_position.x),round(global_position.y))
