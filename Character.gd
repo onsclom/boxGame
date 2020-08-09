@@ -82,7 +82,7 @@ func _physics_process(delta):
 		wallJumpVel = 0
 	y_velo += GRAVITY
 	
-	if timeSinceGrounded > .05:
+	if $GroundCheck.is_colliding()==false and $GroundCheck2.is_colliding()==false:
 		$AnimatedSprite.play("jumping")
 		
 	
@@ -191,16 +191,15 @@ func _physics_process(delta):
 	if squashedTime < squashedTotalTime:
 		$AnimatedSprite.scale.x = 1.3
 	
-	var push = 5
+	var push = 0
 	
 	if timeSinceGrounded < .05:
 		for index in get_slide_count():
 			var collision = get_slide_collision(index)
 			if collision.collider.is_in_group("bodies"):
 				var box = collision.get_collider()
-				
-				box.velocity += -collision.normal * push
-			
+
+				#box.velocity.x += -collision.normal.x * push
 		
 	boxStuff(move_dir)
 		
@@ -246,7 +245,7 @@ func boxStuff(move_dir):
 			
 	#only show indicator if can pickup block
 	if heldBlock == null and closest != null:
-		$Selected.visible = true			
+		$Selected.visible = true
 		$Selected.global_position = closest.global_position
 		
 	if heldBlock:

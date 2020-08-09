@@ -7,8 +7,9 @@ extends KinematicBody2D
 
 var velocity = Vector2(0,0)
 var gravity = 10
-const MAX_FALL_SPEED = 100
+const MAX_FALL_SPEED = 200
 var held = false
+var grounded = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	add_to_group("bodies")
@@ -29,27 +30,28 @@ func _physics_process(delta):
 	
 	velocity.y = min(velocity.y, MAX_FALL_SPEED)
 	
-	var grounded = ($GroundCheck.is_colliding() or $GroundCheck2.is_colliding())
+	grounded = ($GroundCheck.is_colliding() or $GroundCheck2.is_colliding())
 	
 	if grounded:
 		velocity.x = lerp(velocity.x, 0, .1)
-		
-	if is_on_floor():
 		velocity.y = min(velocity.y, 0)
+	
+
 		
-	var snap = Vector2.ZERO
-	velocity = move_and_slide_with_snap( velocity, snap , Vector2(0,-1) )
+	var snap = Vector2.DOWN * 1 if grounded else Vector2.ZERO
+	#snap = Vector2.ZERO
+	#snap = Vector2.ZERO
+	velocity = move_and_slide(velocity, Vector2(0,-1), false, 20 )
 	#move_and_slide(velocity*delta, Vector2(0,-1)).y * (1/delta)
 	
-	var push = 5
 	
-	if grounded:
-		for index in get_slide_count():
-			var collision = get_slide_collision(index)
-			if collision.collider.is_in_group("bodies"):
-				var box = collision.get_collider()
-				
-				if (collision.normal) != Vector2(0,-1):
-					box.velocity += -collision.normal * push
-
+	for index in get_slide_count():
+		var collision = get_slide_collision(index)
+		if collision.collider.is_in_group("bodies"):
+			var box = collision.get_collider()
+			
+			
+			box.velocity.x += -collision.normal.x*abs(velocity.x/50)
+			#box.velocity.y = velocity.y
+			#parent = collision.collider
 	
