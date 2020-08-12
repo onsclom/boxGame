@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tile_0029.png-957090102c481fabef513c9d4ce10105.stex"
+path="res://.import/Physics.png-23cba08d674c910ac373090e273b188d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://artPack/Tiles/Default/tile_0029.png"
-dest_files=[ "res://.import/tile_0029.png-957090102c481fabef513c9d4ce10105.stex" ]
+source_file="res://artPack/editorStuff/Physics.png"
+dest_files=[ "res://.import/Physics.png-23cba08d674c910ac373090e273b188d.stex" ]
 
 [params]
 

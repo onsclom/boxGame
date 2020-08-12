@@ -59,5 +59,5 @@ func makeLevel(rngAmount):
 					
 func _process(delta):
 	if Input.is_action_just_pressed("refresh"):
-		makeLevel(.2)
+		makeLevel(.1)
 	pass

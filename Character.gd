@@ -41,8 +41,13 @@ var move_dir = 0
 
 var pickupDistance = 20
 
+var hasKey = false
+var key = null
+
+
 func _ready():
 	set_process_priority(1)
+	GameManager.player = self
 	#AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), false)
 	pass 
 	
@@ -203,6 +208,15 @@ func basicMovement(delta):
 		var strength = (collision.normal*prevVel).length_squared()
 		if strength > 1000:
 			GameManager.camera.add_trauma(.0015*sqrt(strength))
+			
+	
+
+		
+	
+		
+		
+			
+	
 
 func boxStuff():
 	$Selected.visible = false

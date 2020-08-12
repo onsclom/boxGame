@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Tiles.gd" type="Script" id=1]
 [ext_resource path="res://SideParticles.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://ColorChanger.gd" type="Script" id=4]
 [ext_resource path="res://Character.tscn" type="PackedScene" id=5]
 [ext_resource path="res://ScreenShake.gd" type="Script" id=6]
+[ext_resource path="res://timeLabel.gd" type="Script" id=7]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0.0232558, 1 )
@@ -60,10 +61,13 @@ custom_fonts/normal_font = ExtResource( 3 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 1
 bbcode_enabled = true
-bbcode_text = "[right]top right[/right]"
+bbcode_text = "[right]time:
+[/right]"
 meta_underlined = false
-text = "top right"
+text = "time:
+"
 scroll_active = false
+script = ExtResource( 7 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="UI stuff"]
 anchor_right = 1.0

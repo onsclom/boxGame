@@ -90,6 +90,7 @@ script = ExtResource( 5 )
 position = Vector2( 0, 2 )
 frames = SubResource( 6 )
 animation = "walking"
+frame = 1
 playing = true
 offset = Vector2( 0, -2 )
 
@@ -253,6 +254,12 @@ playing = true
 
 [node name="LeftHold" type="Position2D" parent="."]
 position = Vector2( -16, -4 )
+
+[node name="LeftKey" type="Position2D" parent="."]
+position = Vector2( -14, 4 )
+
+[node name="RightKey" type="Position2D" parent="."]
+position = Vector2( 14, 4 )
 
 [node name="Top" type="Position2D" parent="."]
 position = Vector2( 0, -12 )
