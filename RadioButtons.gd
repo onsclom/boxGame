@@ -48,6 +48,7 @@ func buttonClicked(clickedButton):
 	
 	if clickedButton.pressed == false:
 		#then nothing should be selected
-		cur = 0
-	else:
 		cur = clickedButton.num
+		print("wow")
+	else:
+		cur = 0
